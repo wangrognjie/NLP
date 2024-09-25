@@ -11092,14 +11092,6 @@
     }
   },
   {
-    "text": "花格等蛋的做法。",
-    "domain": "cookbook",
-    "intent": "QUERY",
-    "slots": {
-      "ingredient": "蛋"
-    }
-  },
-  {
     "text": "豆腐花的做法。",
     "domain": "cookbook",
     "intent": "QUERY",
@@ -21680,6 +21672,90 @@
     "slots": {
       "name": "隐入尘烟",
       "artist": "海清"
+    }
+  },
+  {
+    "text": "天津大白菜的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "天津",
+      "crop_name": "大白菜"
+    }
+  },
+  {
+    "text": "北京大白菜的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "北京",
+      "crop_name": "大白菜"
+    }
+  },
+  {
+    "text": "上海大白菜的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "上海",
+      "crop_name": "大白菜"
+    }
+  },
+  {
+    "text": "新疆大白菜的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "新疆",
+      "crop_name": "大白菜"
+    }
+  },
+  {
+    "text": "北京黄瓜的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "北京",
+      "crop_name": "黄瓜"
+    }
+  },
+  {
+    "text": "安徽6月份西红柿的价格",
+    "domain": "llm",
+    "intent": "PRICE_QUERY",
+    "slots": {
+      "location_city": "安徽",
+      "crop_name": "西红柿",
+      "month":"6"
+    }
+  },
+  {
+    "text": "如何种植玉米",
+    "domain": "llm",
+    "intent": "CROP_PLANTING",
+    "slots": {
+      "planting_stage": "种植",
+      "crop_name": "玉米"
+    }
+  },
+  {
+    "text": "小麦什么时候施肥最合适",
+    "domain": "llm",
+    "intent": "CROP_PLANTING",
+    "slots": {
+      "planting_stage": "施肥",
+      "crop_name": "小麦"
+    }
+  },
+  {
+    "text": "我在成都，现在是9月份，可以开始种植水稻吗？",
+    "domain": "llm",
+    "intent": "CROP_PLANTING",
+    "slots": {
+      "planting_stage": "种植",
+      "crop_name": "水稻",
+      "location_city": "成都",
+      "month":"9"
     }
   }
 ]

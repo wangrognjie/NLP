@@ -121,3 +121,9 @@ I_questionWord
 B_questionWord
 I_app
 B_app
+I_crop_name
+B_crop_name
+I_planting_stage
+B_planting_stage
+I_month
+B_month

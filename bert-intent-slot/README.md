@@ -6,6 +6,7 @@
 - Python 3.8
 - Pytorch 1.10
 - Huggingface Transformers 4.11
+- pip install seqeval
 
 
 ## 模型训练

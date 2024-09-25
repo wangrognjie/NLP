@@ -19,7 +19,8 @@ class JointIntentSlotDetector:
         self.tokenizer = tokenizer
         self.intent_dict = intent_dict
         self.slot_dict = slot_dict
-        self.device = "cuda" if torch.cuda.is_available() and use_cuda else "cpu"
+        self.device = "cuda" if torch.cuda.is_available() and use_cuda else "mps"
+        print(self.device)
         self.model.to(self.device)
         self.model.eval()
 
@@ -70,7 +71,6 @@ class JointIntentSlotDetector:
         for slot_name, slot_value in unfinished_slots.items():
             if len(slot_value) > 0:
                 results = add_new_slot_value(results, slot_name, slot_value)
-
         return results
 
     def _extract_slots_from_labels(self, input_ids, slot_labels, mask=None):
@@ -104,7 +104,14 @@ class JointIntentSlotDetector:
         intent_labels : probability of a batch of intent ids into intent labels, [batch, intent_label_num], numpy array
         """
         intent_ids = np.argmax(intent_probs, axis=-1)
-        return self.intent_dict[intent_ids.tolist()]
+        # 获取意图的预测类别和对应的置信度
+        intent_confidence = intent_probs.max(axis=-1)  # 获取最大置信度（概率）
+
+        # 打印意图的预测结果和置信度
+        # print(f"Predicted intent: {intent_ids}, Confidence: {intent_confidence}")
+        intent_id = self.intent_dict[intent_ids.tolist()]
+        # print(f"Predicted intent: {intent_id}")
+        return {"intent_id": intent_id, "intent_confidence": intent_confidence}
 
     def detect(self, text, str_lower_case=True):
         """
@@ -131,16 +138,25 @@ class JointIntentSlotDetector:
 
         intent_probs = torch.softmax(intent_logits, dim=-1).detach().cpu().numpy()
         slot_probs = torch.softmax(slot_logits, dim=-1).detach().cpu().numpy()
-
         # 得到槽位标注结果
         slot_labels = self._predict_slot_labels(slot_probs)
+        # # 获取槽位的预测类别和对应的置信度（每个词对应一个槽位标签）
+        # slot_preds = slot_probs.argmax(axis=-1)  # 获取每个词的最大概率对应的槽位类别
+        # slot_confidences = slot_probs.max(axis=-1)  # 获取每个词的最大置信度（概率）
+        #
+        # # 打印槽位的预测结果和置信度
+        # for i, (pred, conf) in enumerate(zip(slot_preds, slot_confidences)):
+        #     print(f"Word {i}: Predicted slot: {pred},slot_labels:{slot_labels}, Confidence: {conf}")
         # 得到意图识别结果
         intent_labels = self._predict_intent_labels(intent_probs)
-
         slot_values = self._extract_slots_from_labels(inputs['input_ids'], slot_labels, inputs['attention_mask'])
 
-        outputs = [{'text': text[i], 'intent': intent_labels[i], 'slots': slot_values[i]}
-                   for i in range(batch_size)]
+        outputs = [{
+            'text': text[i],
+            'intent': intent_labels.get("intent_id")[i],
+            'intent_confidence': intent_labels.get("intent_confidence")[i],
+            'slots': slot_values[i]}
+            for i in range(batch_size)]
 
         if not list_input:
             return outputs[0]

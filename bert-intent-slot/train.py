@@ -65,7 +65,7 @@ def train(args):
 
     # -----------set cuda environment-------------
     os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda_devices
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = "cuda" if torch.cuda.is_available() else "mps"
 
     # -----------load tokenizer-----------
     tokenizer = BertTokenizer.from_pretrained(args.model_path)
